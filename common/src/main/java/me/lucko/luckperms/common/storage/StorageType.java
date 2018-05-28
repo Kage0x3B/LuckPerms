@@ -46,6 +46,7 @@ public enum StorageType {
     MARIADB("MariaDB", "mariadb"),
     MYSQL("MySQL", "mysql"),
     POSTGRESQL("PostgreSQL", "postgresql"),
+    RETHINKDB("RethinkDB", "rethinkdb"),
 
     // Local databases
     SQLITE("SQLite", "sqlite"),

@@ -25,6 +25,8 @@
 
 package me.lucko.luckperms.common.bulkupdate.comparisons;
 
+import com.rethinkdb.gen.ast.ReqlExpr;
+import com.rethinkdb.gen.ast.ReqlFunction1;
 import me.lucko.luckperms.common.bulkupdate.PreparedStatementBuilder;
 
 /**
@@ -54,4 +56,5 @@ public interface Comparison {
      */
     void appendSql(PreparedStatementBuilder builder);
 
+    ReqlFunction1 createReqlFilter(String fieldName, String expression);
 }

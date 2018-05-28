@@ -31,6 +31,7 @@ import com.google.common.collect.Maps;
 import me.lucko.luckperms.common.config.ConfigKeys;
 import me.lucko.luckperms.common.plugin.LuckPermsPlugin;
 import me.lucko.luckperms.common.storage.dao.AbstractDao;
+import me.lucko.luckperms.common.storage.dao.RethinkDBDao;
 import me.lucko.luckperms.common.storage.dao.SplitStorageDao;
 import me.lucko.luckperms.common.storage.dao.file.CombinedConfigurateDao;
 import me.lucko.luckperms.common.storage.dao.file.SeparatedConfigurateDao;
@@ -126,6 +127,11 @@ public class StorageFactory {
         switch (method) {
             case CUSTOM:
                 return StorageProviders.getProvider().provide(this.plugin);
+            case RETHINKDB:
+                return new RethinkDBDao(this.plugin,
+						this.plugin.getConfiguration().get(ConfigKeys.DATABASE_VALUES),
+						this.plugin.getConfiguration().get(ConfigKeys.SQL_TABLE_PREFIX)
+				);
             case MARIADB:
                 return new SqlDao(
                         this.plugin,

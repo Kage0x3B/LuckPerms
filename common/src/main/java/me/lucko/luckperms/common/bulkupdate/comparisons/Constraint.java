@@ -25,6 +25,8 @@
 
 package me.lucko.luckperms.common.bulkupdate.comparisons;
 
+import com.rethinkdb.gen.ast.ReqlExpr;
+import com.rethinkdb.gen.ast.ReqlFunction1;
 import me.lucko.luckperms.common.bulkupdate.PreparedStatementBuilder;
 
 public class Constraint {
@@ -60,6 +62,10 @@ public class Constraint {
         this.comparison.appendSql(builder);
         builder.append(" ?");
         builder.variable(this.expression);
+    }
+
+    public ReqlFunction1 createReqlFilter(String fieldName) {
+        return comparison.createReqlFilter(fieldName, expression);
     }
 
     public Comparison getComparison() {

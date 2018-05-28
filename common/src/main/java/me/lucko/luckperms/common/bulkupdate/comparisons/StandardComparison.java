@@ -25,17 +25,24 @@
 
 package me.lucko.luckperms.common.bulkupdate.comparisons;
 
+import com.rethinkdb.RethinkDB;
+import com.rethinkdb.gen.ast.ReqlExpr;
+import com.rethinkdb.gen.ast.ReqlFunction1;
 import me.lucko.luckperms.common.bulkupdate.PreparedStatementBuilder;
 
 /**
  * An enumeration of standard {@link Comparison}s.
  */
 public enum StandardComparison implements Comparison {
-
     EQUAL("==", "=") {
         @Override
         public boolean matches(String str, String expr) {
             return str.equalsIgnoreCase(expr);
+        }
+
+        @Override
+        public ReqlFunction1 createReqlFilter(String fieldName, String expression) {
+            return row -> row.g(fieldName).eq(fieldName, expression);
         }
     },
 
@@ -43,6 +50,11 @@ public enum StandardComparison implements Comparison {
         @Override
         public boolean matches(String str, String expr) {
             return !str.equalsIgnoreCase(expr);
+        }
+
+        @Override
+        public ReqlFunction1 createReqlFilter(String fieldName, String expression) {
+            return row -> RethinkDB.r.not(row.g(fieldName).eq(fieldName, expression));
         }
     },
 
@@ -59,6 +71,11 @@ public enum StandardComparison implements Comparison {
 
             return str.toLowerCase().matches(expr);
         }
+
+        @Override
+        public ReqlFunction1 createReqlFilter(String fieldName, String expression) {
+            return row -> row.g(fieldName).match(expression);
+        }
     },
 
     NOT_SIMILAR("!~", "NOT LIKE") {
@@ -73,6 +90,11 @@ public enum StandardComparison implements Comparison {
             expr = expr.replace("%", ".*");
 
             return !str.toLowerCase().matches(expr);
+        }
+
+        @Override
+        public ReqlFunction1 createReqlFilter(String fieldName, String expression) {
+            return row -> RethinkDB.r.not(row.g(fieldName).match(expression));
         }
     };
 
