@@ -13,11 +13,6 @@
         <module>common</module>
         <module>bukkit</module>
         <module>bungee</module>
-        <module>sponge/sponge-service</module>
-        <module>sponge/sponge-service-api6</module>
-        <module>sponge/sponge-service-api7</module>
-        <module>sponge</module>
-        <module>nukkit</module>
     </modules>
 
     <name>LuckPerms</name>
@@ -58,7 +53,7 @@
         <release.version>4.2</release.version>
 
         <!-- Get how many commits have been made since the last tag (the previous release) -->
-        <patch.version>${git.closest.tag.commit.count}</patch.version>
+        <patch.version>0</patch.version>
 
         <full.version>${release.version}.${patch.version}</full.version>
 
@@ -112,27 +107,6 @@
     </build>
 
     <profiles>
-        <profile>
-            <id>sign</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.6</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
         <profile>
             <id>ossrh</id>
             <distributionManagement>
