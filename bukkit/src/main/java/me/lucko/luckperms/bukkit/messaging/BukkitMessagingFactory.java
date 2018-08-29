@@ -58,6 +58,16 @@ public class BukkitMessagingFactory extends MessagingFactory<LPBukkitPlugin> {
                     e.printStackTrace();
                 }
             }
+        } else if (messagingType.equals("kagecloud")) {
+            if (getPlugin().getBootstrap().getServer().getPluginManager().getPlugin("KageCloudSpigot") == null) {
+                getPlugin().getLogger().warn("KageCloudSpigot plugin not present.");
+            } else {
+                try {
+                    return new LuckPermsMessagingService(getPlugin(), new KageCloudMessengerProvider());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         return super.getServiceFor(messagingType);
@@ -94,6 +104,23 @@ public class BukkitMessagingFactory extends MessagingFactory<LPBukkitPlugin> {
             LilyPadMessenger lilyPadMessaging = new LilyPadMessenger(getPlugin(), incomingMessageConsumer);
             lilyPadMessaging.init();
             return lilyPadMessaging;
+        }
+    }
+
+    private class KageCloudMessengerProvider implements MessengerProvider {
+        @Nonnull
+        @Override
+        public String getName() {
+            return "KageCloud";
+        }
+
+        @Nonnull
+        @Override
+        public Messenger obtain(@Nonnull IncomingMessageConsumer incomingMessageConsumer) {
+            KageCloudMessenger kageCloudMessaging = new KageCloudMessenger(getPlugin(), incomingMessageConsumer);
+            kageCloudMessaging.init();
+
+            return kageCloudMessaging;
         }
     }
 }
